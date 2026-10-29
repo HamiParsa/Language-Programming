@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#07070c">
+<title>JavaScript vs Java — مقایسه جامع</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --bg: #07070c;
+    --bg2: #0c0c14;
+    --card: #12121c;
+    --card2: #0e0e16;
+    --border: #22222f;
+    --border-hi: #34344a;
+
+    --js: #f7df1e;
+    --java: #ff8a3d;
+
+    --text: #f0f0f5;
+    --muted: #8888a0;
+
+    --lime: #c6f432;
+    --lime-soft: #d9ff6b;
+    --mint: #7fffd4;
+    --coral: #ff7a5c;
+    --ice: #e8f0ff;
+
+    --grad: linear-gradient(135deg, #c6f432 0%, #7fffd4 100%);
+    --grad-warm: linear-gradient(135deg, #ff7a5c 0%, #f7df1e 100%);
+
+    --fs-h1: clamp(1.8rem, 5vw, 4rem);
+    --fs-h2: clamp(1.3rem, 3vw, 2.3rem);
+    --fs-h2-sec: clamp(1.6rem, 4.5vw, 2.9rem);
+    --fs-body: clamp(0.85rem, 1.4vw, 1.02rem);
+    --fs-sub: clamp(0.85rem, 1.6vw, 1.12rem);
+    --fs-code: clamp(0.7rem, 1.1vw, 0.92rem);
+    --fs-tag: clamp(0.65rem, 1vw, 0.82rem);
+    --fs-icon: clamp(1.8rem, 3vw, 2.6rem);
+    --fs-sec-icon: clamp(3rem, 8vw, 5.5rem);
+    --fs-stat: clamp(1.4rem, 3.5vw, 2.5rem);
+    --pad-slide: clamp(16px, 4vw, 80px);
+    --gap-card: clamp(10px, 1.5vw, 22px);
+  }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* ===== Background ===== */
+  .bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(198,244,50,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(198,244,50,0.04) 1px, transparent 1px);
+    background-size: clamp(30px, 5vw, 55px) clamp(30px, 5vw, 55px);
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 20%, transparent 80%);
+  }
+
+  .bg-glow {
+    width: clamp(350px, 65vw, 800px);
+    height: clamp(350px, 65vw, 800px);
+    border-radius: 50%;
+    filter: blur(clamp(90px, 16vw, 160px));
+    opacity: 0.18;
+    position: absolute;
+    animation: drift 20s ease-in-out infinite;
+  }
+  .glow-1 { background: var(--lime); top: -30%; right: -25%; }
+  .glow-2 { background: var(--mint); bottom: -30%; left: -25%; opacity: 0.14; animation-delay: -7s; }
+  .glow-3 { background: var(--coral); top: 30%; right: 40%; opacity: 0.08; animation-delay: -13s; }
+
+  @keyframes drift {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(70px, -50px) scale(1.1); }
+    66% { transform: translate(-50px, 60px) scale(0.95); }
+  }
+
+  .bg-lines {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 60px,
+      rgba(198,244,50,0.025) 60px,
+      rgba(198,244,50,0.025) 61px
+    );
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 90%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 90%);
+  }
+
+  .particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0;
+    animation: floatParticle linear infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes floatParticle {
+    0% { transform: translateY(110vh) translateX(0) scale(0.5); opacity: 0; }
+    10% { opacity: 0.9; }
+    60% { opacity: 0.7; }
+    100% { transform: translateY(-10vh) translateX(var(--drift, 20px)) scale(1); opacity: 0; }
+  }
+
+  .scanlines {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background: repeating-linear-gradient(0deg,
+      rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px,
+      rgba(198,244,50,0.015) 3px, rgba(0,0,0,0) 4px);
+    opacity: 0.6;
+  }
+
+  .vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.55) 100%);
+  }
+
+  /* ===== Deck ===== */
+  .deck { position: relative; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; perspective: 2000px; }
+
+  /* ===== انیمیشن‌های ورود/خروج اسلاید ===== */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(60px, 8vh, 80px) var(--pad-slide) clamp(90px, 12vh, 110px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    will-change: transform, opacity, filter;
+  }
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 1;
+  }
+
+  /* ---------- ورود از پایین (به جلو) ---------- */
+  .slide.enter-from-bottom {
+    animation: enterFromBottom .9s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  @keyframes enterFromBottom {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 120px, -200px) rotateX(15deg) scale(0.92);
+      filter: blur(12px);
+    }
+    60% {
+      opacity: 1;
+      filter: blur(0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  /* ---------- خروج به بالا (به جلو) ---------- */
+  .slide.exit-to-top {
+    animation: exitToTop .8s cubic-bezier(.55,0,.75,.4) forwards;
+    pointer-events: none;
+  }
+  @keyframes exitToTop {
+    0% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+      filter: blur(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(0, -140px, -300px) rotateX(-15deg) scale(0.85);
+      filter: blur(16px);
+    }
+  }
+
+  /* ---------- ورود از بالا (به عقب) ---------- */
+  .slide.enter-from-top {
+    animation: enterFromTop .9s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  @keyframes enterFromTop {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, -120px, -200px) rotateX(-15deg) scale(0.92);
+      filter: blur(12px);
+    }
+    60% {
+      opacity: 1;
+      filter: blur(0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  /* ---------- خروج به پایین (به عقب) ---------- */
+  .slide.exit-to-bottom {
+    animation: exitToBottom .8s cubic-bezier(.55,0,.75,.4) forwards;
+    pointer-events: none;
+  }
+  @keyframes exitToBottom {
+    0% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+      filter: blur(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(0, 140px, -300px) rotateX(15deg) scale(0.85);
+      filter: blur(16px);
+    }
+  }
+
+  /* ===== Typography ===== */
+  h1 {
+    font-size: var(--fs-h1);
+    font-weight: 900;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    filter: drop-shadow(0 0 40px rgba(198,244,50,0.3));
+  }
+  h2 {
+    font-size: var(--fs-h2);
+    font-weight: 800;
+    margin-bottom: 6px;
+    text-align: center;
+    line-height: 1.4;
+  }
+  h2 .js { color: var(--js); text-shadow: 0 0 25px rgba(247,223,30,0.45); }
+  h2 .java { color: var(--java); text-shadow: 0 0 25px rgba(255,138,61,0.45); }
+  h2 .both {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 25px rgba(198,244,50,0.35));
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: var(--fs-sub);
+    text-align: center;
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  .divider {
+    width: clamp(60px, 10vw, 90px);
+    height: 3px;
+    background: var(--grad);
+    border-radius: 2px;
+    margin: clamp(10px, 1.5vh, 18px) auto clamp(16px, 3vh, 30px);
+    box-shadow: 0 0 25px rgba(198,244,50,0.5);
+  }
+
+  /* ===== Cards ===== */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: var(--gap-card);
+    width: 100%;
+    max-width: 1180px;
+  }
+
+  .card {
+    background: linear-gradient(160deg, var(--card), var(--card2));
+    border: 1px solid var(--border);
+    border-radius: clamp(12px, 1.6vw, 20px);
+    padding: clamp(16px, 2.2vw, 30px);
+    position: relative;
+    overflow: hidden;
+    transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s, border-color .35s;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 150px; height: 150px;
+    background: radial-gradient(circle at top right, rgba(198,244,50,0.12), transparent 70%);
+    opacity: 0;
+    transition: opacity .35s;
+  }
+  @media (hover: hover) {
+    .card:hover { transform: translateY(-6px); border-color: var(--border-hi); }
+    .card:hover::before { opacity: 1; }
+    .card.js-card:hover {
+      border-color: var(--js);
+      box-shadow: 0 24px 60px rgba(247,223,30,0.14);
+    }
+    .card.java-card:hover {
+      border-color: var(--java);
+      box-shadow: 0 24px 60px rgba(255,138,61,0.14);
+    }
+  }
+  .card.js-card { border-top: 3px solid var(--js); }
+  .card.java-card { border-top: 3px solid var(--java); }
+
+  .card .tag {
+    display: inline-block;
+    font-size: var(--fs-tag);
+    font-weight: 800;
+    padding: 5px 14px;
+    border-radius: 50px;
+    margin-bottom: clamp(10px, 1.2vw, 16px);
+    letter-spacing: .3px;
+  }
+  .js-card .tag {
+    background: rgba(247,223,30,0.1);
+    color: var(--js);
+    border: 1px solid rgba(247,223,30,0.3);
+  }
+  .java-card .tag {
+    background: rgba(255,138,61,0.1);
+    color: var(--java);
+    border: 1px solid rgba(255,138,61,0.3);
+  }
+
+  .card .icon {
+    font-size: var(--fs-icon);
+    margin-bottom: clamp(8px, 1.2vw, 14px);
+    display: block;
+    filter: drop-shadow(0 0 18px rgba(198,244,50,0.4));
+  }
+
+  .card ul { list-style: none; display: flex; flex-direction: column; gap: clamp(8px, 1.2vh, 13px); }
+  .card li {
+    font-size: var(--fs-body);
+    line-height: 1.7;
+    color: var(--text);
+    padding-right: clamp(18px, 2vw, 26px);
+    position: relative;
+  }
+  .card li::before {
+    content: '▹';
+    position: absolute;
+    right: 0;
+    color: var(--lime);
+    font-weight: 700;
+  }
+  .js-card li::before { color: var(--js); }
+  .java-card li::before { color: var(--java); }
+
+  /* ===== Code ===== */
+  .code-block {
+    width: 100%;
+    max-width: 1180px;
+    background: #08080f;
+    border: 1px solid var(--border);
+    border-radius: clamp(10px, 1.4vw, 16px);
+    margin-top: clamp(10px, 2vh, 22px);
+    font-family: 'Consolas', 'Courier New', monospace;
+    direction: ltr;
+    text-align: left;
+    font-size: var(--fs-code);
+    line-height: 1.75;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: clamp(8px, 1.2vw, 12px) clamp(12px, 1.6vw, 18px);
+    background: linear-gradient(180deg, #12121c, #0e0e16);
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: clamp(8px, 1vw, 12px); height: clamp(8px, 1vw, 12px); border-radius: 50%; }
+  .dot.red { background: #ff5f57; }
+  .dot.yellow { background: #febc2e; }
+  .dot.green { background: #28c840; }
+  .code-title {
+    margin-left: auto;
+    font-size: clamp(0.6rem, 0.9vw, 0.8rem);
+    color: var(--muted);
+    font-family: 'Vazirmatn', sans-serif;
+    direction: rtl;
+  }
+  .code-body {
+    padding: clamp(12px, 1.8vw, 20px) clamp(14px, 2vw, 26px);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .kw { color: #c6f432; }
+  .str { color: #7fffd4; }
+  .num { color: #ffb86c; }
+  .fn { color: #8fd3ff; }
+  .cm { color: #565672; font-style: italic; }
+  .ty { color: #ffd580; }
+
+  .code-line {
+    display: block;
+    white-space: pre;
+    padding: 1px 0;
+  }
+  .code-line .cm-line {
+    display: block;
+    color: #565672;
+    font-style: italic;
+    margin-top: 8px;
+    margin-bottom: 2px;
+  }
+  .code-line .cm-line:first-child { margin-top: 0; }
+
+  /* ===== Cover ===== */
+  .cover {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(6px, 1vh, 10px);
+    width: 100%;
+  }
+  .cover .badge-top {
+    font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+    color: var(--lime);
+    letter-spacing: 4px;
+    margin-bottom: clamp(10px, 2vh, 16px);
+    padding: 6px 20px;
+    border: 1px solid rgba(198,244,50,0.35);
+    border-radius: 50px;
+    background: rgba(198,244,50,0.06);
+    box-shadow: 0 0 30px rgba(198,244,50,0.2);
+    animation: floaty 3s ease-in-out infinite;
+  }
+  .cover .vs-big {
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 2vw, 28px);
+    margin: clamp(16px, 3vh, 28px) 0;
+    font-size: clamp(0.9rem, 1.6vw, 1.5rem);
+    font-weight: 800;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .cover .lang-pill {
+    padding: clamp(8px, 1.2vw, 14px) clamp(16px, 2.4vw, 34px);
+    border-radius: 50px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    transition: all .3s;
+  }
+  @media (hover: hover) {
+    .cover .lang-pill:hover { transform: translateY(-3px) scale(1.05); }
+  }
+  .cover .lang-pill.js-p {
+    color: var(--js);
+    border-color: rgba(247,223,30,0.45);
+    box-shadow: 0 0 35px rgba(247,223,30,0.25);
+  }
+  .cover .lang-pill.java-p {
+    color: var(--java);
+    border-color: rgba(255,138,61,0.45);
+    box-shadow: 0 0 35px rgba(255,138,61,0.25);
+  }
+  .cover .sword {
+    color: var(--lime);
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    animation: spin 4s linear infinite;
+    display: inline-block;
+    filter: drop-shadow(0 0 15px rgba(198,244,50,0.8));
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .cover .presenters {
+    margin-top: clamp(16px, 3vh, 34px);
+    display: flex;
+    gap: clamp(10px, 1.5vw, 24px);
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+  .presenter {
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 1.2vw, 14px);
+    background: rgba(18,18,28,0.85);
+    border: 1px solid var(--border);
+    border-radius: clamp(10px, 1.4vw, 16px);
+    padding: clamp(8px, 1.2vw, 14px) clamp(14px, 2vw, 26px);
+    transition: all .3s;
+  }
+  @media (hover: hover) {
+    .presenter:hover {
+      border-color: var(--lime);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(198,244,50,0.2);
+    }
+  }
+  .avatar {
+    width: clamp(34px, 4vw, 48px);
+    height: clamp(34px, 4vw, 48px);
+    border-radius: 50%;
+    background: var(--grad);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; color: #07070c; font-size: clamp(0.9rem, 1.4vw, 1.25rem);
+    box-shadow: 0 0 22px rgba(198,244,50,0.5);
+    flex-shrink: 0;
+  }
+  .presenter .name { font-weight: 800; font-size: clamp(0.8rem, 1.2vw, 1.05rem); }
+  .presenter .role { font-size: clamp(0.65rem, 0.95vw, 0.8rem); color: var(--muted); }
+
+  /* ===== Section slide ===== */
+  .section-slide {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .section-slide .sec-icon {
+    font-size: var(--fs-sec-icon);
+    margin-bottom: clamp(12px, 2vh, 24px);
+    animation: floaty 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 40px rgba(198,244,50,0.6));
+  }
+  .section-slide h2 { font-size: var(--fs-h2-sec); }
+  .section-slide .sec-num {
+    font-size: clamp(0.7rem, 1.1vw, 1rem);
+    color: var(--mint);
+    letter-spacing: 6px;
+    margin-bottom: clamp(8px, 1.5vh, 14px);
+    font-weight: 700;
+    text-shadow: 0 0 20px rgba(127,255,212,0.5);
+  }
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-16px); }
+  }
+
+  /* ===== Table ===== */
+  .table-wrap {
+    width: 100%;
+    max-width: 1180px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: clamp(10px, 1.4vw, 18px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .compare-table {
+    width: 100%;
+    min-width: 480px;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: clamp(10px, 1.4vw, 18px);
+    overflow: hidden;
+  }
+  .compare-table th, .compare-table td {
+    padding: clamp(8px, 1.4vw, 18px) clamp(10px, 1.6vw, 22px);
+    text-align: right;
+    font-size: clamp(0.75rem, 1.1vw, 1rem);
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-table th {
+    font-weight: 800;
+    background: linear-gradient(180deg, #16161f, #0e0e16);
+  }
+  .compare-table th.js-col { color: var(--js); }
+  .compare-table th.java-col { color: var(--java); }
+  .compare-table th.feat-col { color: var(--lime); }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { color: var(--muted); font-weight: 700; }
+  @media (hover: hover) {
+    .compare-table tr:hover td { background: rgba(198,244,50,0.04); }
+  }
+
+  /* ===== Stats ===== */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: clamp(10px, 1.4vw, 20px);
+    width: 100%;
+    max-width: 1050px;
+  }
+  .stat {
+    background: linear-gradient(160deg, var(--card), var(--card2));
+    border: 1px solid var(--border);
+    border-radius: clamp(10px, 1.4vw, 18px);
+    padding: clamp(16px, 2.4vw, 28px) clamp(10px, 1.4vw, 18px);
+    text-align: center;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+  }
+  @media (hover: hover) {
+    .stat:hover {
+      transform: translateY(-6px);
+      border-color: var(--lime);
+      box-shadow: 0 20px 50px rgba(198,244,50,0.18);
+    }
+  }
+  .stat .num {
+    font-size: var(--fs-stat);
+    font-weight: 900;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+  }
+  .stat .lbl { font-size: clamp(0.72rem, 1vw, 0.92rem); color: var(--muted); line-height: 1.5; }
+
+  /* ===== Note ===== */
+  .note {
+    margin-top: clamp(10px, 2vh, 22px);
+    max-width: 1050px;
+    width: 100%;
+    background: rgba(198,244,50,0.05);
+    border: 1px solid rgba(198,244,50,0.22);
+    border-right: 4px solid var(--lime);
+    border-radius: clamp(8px, 1vw, 12px);
+    padding: clamp(10px, 1.6vw, 16px) clamp(14px, 2vw, 22px);
+    font-size: clamp(0.78rem, 1.1vw, 0.98rem);
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .note b { color: var(--lime); }
+
+  /* ===== Nav ===== */
+  .progress-bar {
+    position: fixed;
+    top: 0; right: 0;
+    height: 3px;
+    background: var(--grad);
+    transition: width .5s cubic-bezier(.22,1,.36,1);
+    z-index: 100;
+    box-shadow: 0 0 20px rgba(198,244,50,0.7);
+    width: 0;
+  }
+  .nav-arrows {
+    position: fixed;
+    bottom: max(16px, env(safe-area-inset-bottom, 16px));
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 1.2vw, 14px);
+    z-index: 100;
+    background: rgba(12,12,20,0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-hi);
+    border-radius: 50px;
+    padding: 6px 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.7), 0 0 30px rgba(198,244,50,0.12);
+  }
+  .nav-btn {
+    height: clamp(38px, 4.5vw, 44px);
+    padding: 0 clamp(14px, 2vw, 22px);
+    border-radius: 50px;
+    border: none;
+    background: var(--card);
+    color: var(--text);
+    font-size: clamp(0.75rem, 1.1vw, 0.92rem);
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px;
+    transition: all .3s cubic-bezier(.22,1,.36,1);
+    flex-shrink: 0;
+    touch-action: manipulation;
+    white-space: nowrap;
+  }
+  .nav-btn .arrow {
+    font-size: 1rem;
+    transition: transform .3s;
+  }
+  @media (hover: hover) {
+    .nav-btn:hover:not(:disabled) {
+      background: var(--lime);
+      color: #07070c;
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(198,244,50,0.7);
+    }
+    .nav-btn.prev-btn:hover:not(:disabled) .arrow { transform: translateY(-3px); }
+    .nav-btn.next-btn:hover:not(:disabled) .arrow { transform: translateY(3px); }
+  }
+  .nav-btn:active:not(:disabled) {
+    transform: scale(0.96);
+    background: var(--lime);
+    color: #07070c;
+  }
+  .nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+  .counter {
+    font-size: clamp(0.7rem, 1vw, 0.88rem);
+    color: var(--muted);
+    font-weight: 800;
+    min-width: clamp(50px, 7vw, 64px);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    padding: 0 4px;
+  }
+
+  .hint {
+    position: fixed;
+    bottom: max(16px, env(safe-area-inset-bottom, 16px));
+    right: clamp(12px, 2vw, 28px);
+    font-size: clamp(0.6rem, 0.9vw, 0.72rem);
+    color: var(--muted);
+    opacity: 0.55;
+    z-index: 100;
+    display: flex; align-items: center; gap: 6px;
+  }
+  @media (max-width: 720px) {
+    .hint { display: none; }
+  }
+  .hint kbd {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  .tap-zone {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 25%;
+    z-index: 90;
+    cursor: pointer;
+  }
+  .tap-zone.left { left: 0; }
+  .tap-zone.right { right: 0; }
+
+  .fs-btn {
+    position: fixed;
+    top: max(12px, env(safe-area-inset-top, 12px));
+    left: 12px;
+    width: clamp(34px, 4vw, 40px);
+    height: clamp(34px, 4vw, 40px);
+    border-radius: 50%;
+    border: 1px solid var(--border-hi);
+    background: rgba(12,12,20,0.92);
+    color: var(--text);
+    font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+    transition: all .25s;
+    touch-action: manipulation;
+  }
+  @media (hover: hover) {
+    .fs-btn:hover {
+      border-color: var(--lime);
+      color: var(--lime);
+      transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(198,244,50,0.5);
+    }
+  }
+
+  /* ===== محتوای داخل اسلاید — انیمیشن آبشاری هنگام ورود ===== */
+  .slide.enter-from-bottom .card,
+  .slide.enter-from-bottom .stat,
+  .slide.enter-from-bottom .note,
+  .slide.enter-from-bottom .code-block,
+  .slide.enter-from-bottom .table-wrap,
+  .slide.enter-from-bottom .presenter,
+  .slide.enter-from-top .card,
+  .slide.enter-from-top .stat,
+  .slide.enter-from-top .note,
+  .slide.enter-from-top .code-block,
+  .slide.enter-from-top .table-wrap,
+  .slide.enter-from-top .presenter {
+    animation: contentCascade .65s cubic-bezier(.16,1,.3,1) both;
+  }
+  .slide.enter-from-bottom .card:nth-child(2),
+  .slide.enter-from-bottom .stat:nth-child(2),
+  .slide.enter-from-bottom .presenter:nth-child(2),
+  .slide.enter-from-top .card:nth-child(2),
+  .slide.enter-from-top .stat:nth-child(2),
+  .slide.enter-from-top .presenter:nth-child(2) { animation-delay: .12s; }
+  .slide.enter-from-bottom .card:nth-child(3),
+  .slide.enter-from-bottom .stat:nth-child(3),
+  .slide.enter-from-top .card:nth-child(3),
+  .slide.enter-from-top .stat:nth-child(3) { animation-delay: .24s; }
+  .slide.enter-from-bottom .card:nth-child(4),
+  .slide.enter-from-bottom .stat:nth-child(4),
+  .slide.enter-from-top .card:nth-child(4),
+  .slide.enter-from-top .stat:nth-child(4) { animation-delay: .36s; }
+  .slide.enter-from-bottom .stat:nth-child(5),
+  .slide.enter-from-top .stat:nth-child(5) { animation-delay: .48s; }
+  .slide.enter-from-bottom .stat:nth-child(6),
+  .slide.enter-from-top .stat:nth-child(6) { animation-delay: .60s; }
+
+  @keyframes contentCascade {
+    0% { opacity: 0; transform: translateY(30px) scale(0.94); filter: blur(6px); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  @media (max-height: 500px) and (orientation: landscape) {
+    .slide { padding: 50px 30px 80px; justify-content: flex-start; }
+    .section-slide { justify-content: center; padding-top: 20px; }
+    .cover .badge-top { display: none; }
+    .cover .vs-big { margin: 8px 0; }
+  }
+
+  @media (max-width: 480px) {
+    .cards { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .cover .vs-big { gap: 8px; }
+    .cover .lang-pill { padding: 6px 14px; font-size: 0.85rem; }
+    .nav-btn .label { display: none; }
+    .nav-btn { padding: 0 14px; }
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--lime); }
+</style>
+</head>
+<body>
+
+<div class="bg-layer bg-grid"></div>
+<div class="bg-glow glow-1"></div>
+<div class="bg-glow glow-2"></div>
+<div class="bg-glow glow-3"></div>
+<div class="bg-lines"></div>
+
+<div class="particles" id="particles"></div>
+<div class="scanlines"></div>
+<div class="vignette"></div>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<button class="fs-btn" id="fsBtn" title="تمام‌صفحه" aria-label="تمام‌صفحه">⛶</button>
+
+<div class="tap-zone left" id="tapPrev" aria-label="اسلاید قبلی"></div>
+<div class="tap-zone right" id="tapNext" aria-label="اسلاید بعدی"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 -->
+  <section class="slide active">
+    <div class="cover">
+      <div class="badge-top">✦ ارائه طراحی زبان های برنامه سازی ✦</div>
+      <h1>مقایسه JavaScript و Java</h1>
+      <div class="vs-big">
+        <span class="lang-pill js-p">جاوا اسکریپت</span>
+        <span class="sword">⚔</span>
+        <span class="lang-pill java-p">جاوا</span>
+      </div>
+      <p class="subtitle">دو زبان، دو دنیا، یک نام شبیه!</p>
+      <div class="presenters">
+        <div class="presenter">
+          <div>
+            <div class="name">محمد جواد پارسا</div>
+            
+          </div>
+        </div>
+        <div class="presenter">
+          <div>
+            <div class="name">علی خان محمدی</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">🧭</div>
+    <div class="sec-num">بخش اول</div>
+    <h2 class="both">معرفی دو زبان</h2>
+    <p class="subtitle">جاوا اسکریپت چیست؟ جاوا چیست؟</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide">
+    <h2><span class="js">جاوا اسکریپت</span> چیست؟</h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card js-card">
+        <span class="icon">🟨</span>
+        <span class="tag">جاوا اسکریپت</span>
+        <ul>
+          <li>زبانی <b>تفسیری</b> و <b>پویا</b> برای وب و فراتر از آن</li>
+          <li>در سال ۱۹۹۵ توسط برندن آیک در نت‌اسکیپ متولد شد</li>
+          <li>قلب تعاملات صفحات وب در مرورگر</li>
+          <li>امروزه با Node.js در سمت سرور هم اجرا می‌شود</li>
+          <li>تک‌رشته‌ای، مبتنی بر رویداد و حلقه‌ی رویداد</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><b>نکته:</b> نامش شبیه جاوا است، اما از نظر طراحی و فلسفه کاملاً متفاوت‌اند — فقط برای بازاریابی!</div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide">
+    <h2><span class="java">جاوا</span> چیست؟</h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card java-card">
+        <span class="icon">☕</span>
+        <span class="tag">جاوا</span>
+        <ul>
+          <li>زبانی <b>کامپایل‌شده</b>، <b>ایستا</b> و <b>شیءگرا</b></li>
+          <li>در سال ۱۹۹۵ توسط جیمز گاسلینگ در سان مایکروسیستمز</li>
+          <li>شعار معروف: یک بار بنویس، همه‌جا اجرا کن</li>
+          <li>اجرا بر روی ماشین مجازی جاوا (JVM)</li>
+          <li>محبوب در سیستم‌های سازمانی، اندروید و بک‌اند</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><b>نکته:</b> جاوا و جاوا اسکریپت دو زبان مستقل هستند — اشتراک نام فقط یک تصمیم تاریخی است.</div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">🗺️</div>
+    <div class="sec-num">بخش دوم</div>
+    <h2 class="both">حوزه‌های برنامه‌نویسی</h2>
+    <p class="subtitle">هر زبان، کجا می‌درخشد؟</p>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide">
+    <h2>حوزه‌های برنامه‌نویسی در <span class="js">جاوا اسکریپت</span></h2>
+    <div class="divider"></div>
+    <div class="cards">
+      <div class="card js-card">
+        <span class="icon">🌐</span>
+        <span class="tag">سمت کاربر</span>
+        <ul>
+          <li>ساخت رابط‌های تعاملی وب</li>
+          <li>ری‌اکت، ویو، آنگولار</li>
+        </ul>
+      </div>
+      <div class="card js-card">
+        <span class="icon">⚙️</span>
+        <span class="tag">سمت سرور</span>
+        <ul>
+          <li>Node.js، اکسپرس، نست‌جی‌اس</li>
+          <li>ای‌پی‌آی‌ها و میکروسرویس‌ها</li>
+        </ul>
+      </div>
+      <div class="card js-card">
+        <span class="icon">📱</span>
+        <span class="tag">موبایل</span>
+        <ul>
+          <li>ری‌اکت نیتیو، آیونیک</li>
+          <li>اپلیکیشن‌های موبایل کراس‌پلتفرم</li>
+        </ul>
+      </div>
+      <div class="card js-card">
+        <span class="icon">🖥️</span>
+        <span class="tag">دسکتاپ و اینترنت اشیا</span>
+        <ul>
+          <li>الکترون برای دسکتاپ</li>
+          <li>جانی-فایو برای سخت‌افزار</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide">
+    <h2>حوزه‌های برنامه‌نویسی در <span class="java">جاوا</span></h2>
+    <div class="divider"></div>
+    <div class="cards">
+      <div class="card java-card">
+        <span class="icon">🏢</span>
+        <span class="tag">سازمانی</span>
+        <ul>
+          <li>سیستم‌های سازمانی بزرگ</li>
+          <li>اسپرینگ، جاکارتا ای‌ای</li>
+        </ul>
+      </div>
+      <div class="card java-card">
+        <span class="icon">🤖</span>
+        <span class="tag">اندروید</span>
+        <ul>
+          <li>توسعه اپلیکیشن‌های اندروید</li>
+          <li>پایه‌ی کاتلین و اندروید اس‌دی‌کی</li>
+        </ul>
+      </div>
+      <div class="card java-card">
+        <span class="icon">🖧</span>
+        <span class="tag">سمت سرور</span>
+        <ul>
+          <li>سرورهای پرترافیک و بانکداری</li>
+          <li>میکروسرویس‌های مقیاس‌پذیر</li>
+        </ul>
+      </div>
+      <div class="card java-card">
+        <span class="icon">📊</span>
+        <span class="tag">داده‌های حجیم</span>
+        <ul>
+          <li>هادوپ، اسپارک، کافکا</li>
+          <li>پردازش داده‌های حجیم</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">🏛️</div>
+    <div class="sec-num">بخش سوم</div>
+    <h2 class="both">اصول طراحی زبان‌ها</h2>
+    <p class="subtitle">فلسفه‌ی پشت هر زبان</p>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide">
+    <h2>اصول طراحی در <span class="js">جاوا اسکریپت</span></h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card js-card">
+        <span class="icon">🧩</span>
+        <span class="tag">فلسفه طراحی</span>
+        <ul>
+          <li><b>پویا و منعطف:</b> تغییر نوع متغیرها در زمان اجرا</li>
+          <li><b>مبتنی بر پروتوتایپ:</b> وراثت از طریق پروتوتایپ</li>
+          <li><b>توابع مرتبه‌ی اول:</b> توابع به عنوان مقدار</li>
+          <li><b>غیرمسدودکننده:</b> مدل رویدادمحور و ناهمگام</li>
+          <li><b>سادگی آغاز:</b> یادگیری آسان، عمق زیاد</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide">
+    <h2>اصول طراحی در <span class="java">جاوا</span></h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card java-card">
+        <span class="icon">🧱</span>
+        <span class="tag">فلسفه طراحی</span>
+        <ul>
+          <li><b>ایستا و صریح:</b> تعریف نوع همه‌چیز در کامپایل</li>
+          <li><b>شیءگرای محض:</b> همه‌چیز در قالب کلاس</li>
+          <li><b>ایمنی نوع:</b> جلوگیری از خطا در زمان کامپایل</li>
+          <li><b>قابل حمل:</b> یک بار بنویس، همه‌جا اجرا کن</li>
+          <li><b>ساختارمند:</b> نظم، خوانایی و نگهداری بلندمدت</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">⚙️</div>
+    <div class="sec-num">بخش چهارم</div>
+    <h2 class="both">اثرات معماری ماشین</h2>
+    <p class="subtitle">زبان چگونه با ماشین حرف می‌زند؟</p>
+  </section>
+
+  <!-- 12 -->
+  <section class="slide">
+    <h2>اثرات معماری ماشین در <span class="js">جاوا اسکریپت</span></h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card js-card">
+        <span class="icon">🔄</span>
+        <span class="tag">مدل اجرا</span>
+        <ul>
+          <li>اجرا بر روی <b>موتور جاوا اسکریپت</b> (وی۸، اسپایدرمانکی)</li>
+          <li>موتور از <b>کامپایل در لحظه</b> برای تبدیل به کد ماشین استفاده می‌کند</li>
+          <li>مدل <b>تک‌رشته‌ای</b> با حلقه‌ی رویداد و صف پاسخ</li>
+          <li>حافظه از طریق <b>زباله‌روب</b> مدیریت می‌شود</li>
+          <li>مستقل از معماری سخت‌افزار — در هر مرورگری اجرا می‌شود</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 -->
+  <section class="slide">
+    <h2>اثرات معماری ماشین در <span class="java">جاوا</span></h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card java-card">
+        <span class="icon">☕</span>
+        <span class="tag">مدل اجرا</span>
+        <ul>
+          <li>اجرا بر روی <b>ماشین مجازی جاوا</b></li>
+          <li>کامپایل به <b>بایت‌کد</b> و سپس کامپایل در لحظه به کد ماشین</li>
+          <li><b>چندرشته‌ای واقعی</b> با نخ و همزمانی</li>
+          <li><b>زباله‌روب</b> پیشرفته (جی۱، زد‌جی‌سی)</li>
+          <li>معماری مستقل از سخت‌افزار به لطف ماشین مجازی</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">📚</div>
+    <div class="sec-num">بخش پنجم</div>
+    <h2 class="both">اصول اولیه زبان‌ها</h2>
+    <p class="subtitle">نحو، ساختار و پایه‌ها</p>
+  </section>
+
+  <!-- 15 -->
+  <section class="slide">
+    <h2>اصول اولیه در <span class="js">جاوا اسکریپت</span></h2>
+    <div class="divider"></div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="code-title">example.js — نمونه کد</span>
+      </div>
+      <div class="code-body">
+        <div class="code-line"><span class="cm-line">// تعریف متغیر با let و const</span></div>
+        <div class="code-line"><span class="kw">let</span> name = <span class="str">"JS"</span>;</div>
+        <div class="code-line"><span class="kw">const</span> version = <span class="num">2024</span>;</div>
+        <div class="code-line">&nbsp;</div>
+        <div class="code-line"><span class="cm-line">// تابع ساده</span></div>
+        <div class="code-line"><span class="kw">function</span> <span class="fn">greet</span>() {</div>
+        <div class="code-line">&nbsp;&nbsp;<span class="kw">return</span> <span class="str">`Hello ${name}`</span>;</div>
+        <div class="code-line">}</div>
+        <div class="code-line">&nbsp;</div>
+        <div class="code-line"><span class="cm-line">// شیء و آرایه</span></div>
+        <div class="code-line"><span class="kw">const</span> user = { name: <span class="str">"Ali"</span>, age: <span class="num">22</span> };</div>
+        <div class="code-line"><span class="kw">const</span> list = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];</div>
+        <div class="code-line">&nbsp;</div>
+        <div class="code-line"><span class="cm-line">// چاپ در کنسول</span></div>
+        <div class="code-line">console.<span class="fn">log</span>(<span class="fn">greet</span>());</div>
+      </div>
+    </div>
+    <div class="note"><b>ویژگی:</b> نحو سبک و انعطاف‌پذیر، بدون نیاز به تعریف نوع.</div>
+  </section>
+
+  <!-- 16 -->
+  <section class="slide">
+    <h2>اصول اولیه در <span class="java">جاوا</span></h2>
+    <div class="divider"></div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="code-title">Main.java — نمونه کد</span>
+      </div>
+      <div class="code-body">
+        <div class="code-line"><span class="cm-line">// کلاس و متد main</span></div>
+        <div class="code-line"><span class="kw">public class</span> <span class="ty">Main</span> {</div>
+        <div class="code-line">&nbsp;&nbsp;<span class="kw">public static void</span> <span class="fn">main</span>(<span class="ty">String</span>[] args) {</div>
+        <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">String</span> name = <span class="str">"Java"</span>;</div>
+        <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">int</span> version = <span class="num">2024</span>;</div>
+        <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="ty">System</span>.out.<span class="fn">println</span>(<span class="str">"Hello "</span> + name);</div>
+        <div class="code-line">&nbsp;&nbsp;}</div>
+        <div class="code-line">}</div>
+        <div class="code-line">&nbsp;</div>
+        <div class="code-line"><span class="cm-line">// تعریف صریح نوع در همه‌جا</span></div>
+        <div class="code-line"><span class="ty">List</span>&lt;<span class="ty">Integer</span>&gt; list = <span class="ty">List</span>.<span class="fn">of</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>);</div>
+      </div>
+    </div>
+    <div class="note"><b>ویژگی:</b> نحو صریح، ساختارمند و نیازمند تعریف نوع.</div>
+  </section>
+
+  <!-- 17 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">🔤</div>
+    <div class="sec-num">بخش ششم</div>
+    <h2 class="both">نوع داده‌های اولیه</h2>
+    <p class="subtitle">از عدد تا صحیح و منطقی</p>
+  </section>
+
+  <!-- 18 -->
+  <section class="slide">
+    <h2>نوع داده اولیه در <span class="js">جاوا اسکریپت</span></h2>
+    <div class="divider"></div>
+    <div class="cards">
+      <div class="card js-card">
+        <span class="tag">نوع‌های اولیه</span>
+        <ul>
+          <li><b>Number</b> — اعداد (صحیح و اعشاری)</li>
+          <li><b>String</b> — رشته‌ها</li>
+          <li><b>Boolean</b> — درست / نادرست</li>
+          <li><b>undefined</b> و <b>null</b></li>
+          <li><b>Symbol</b> و <b>BigInt</b></li>
+        </ul>
+      </div>
+      <div class="card js-card">
+        <span class="tag">نکته</span>
+        <ul>
+          <li>تایپ‌ها <b>پویا</b> هستند</li>
+          <li>یک متغیر می‌تواند نوعش تغییر کند</li>
+          <li>خطاهای نوعی در زمان اجرا رخ می‌دهند</li>
+          <li>بدون نیاز به تعریف صریح</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 19 -->
+  <section class="slide">
+    <h2>نوع داده اولیه در <span class="java">جاوا</span></h2>
+    <div class="divider"></div>
+    <div class="cards">
+      <div class="card java-card">
+        <span class="tag">نوع‌های اولیه</span>
+        <ul>
+          <li><b>byte, short, int, long</b> — اعداد صحیح</li>
+          <li><b>float, double</b> — اعداد اعشاری</li>
+          <li><b>char</b> — کاراکتر</li>
+          <li><b>boolean</b> — منطقی</li>
+        </ul>
+      </div>
+      <div class="card java-card">
+        <span class="tag">نکته</span>
+        <ul>
+          <li>تایپ‌ها <b>ایستا</b> و صریح هستند</li>
+          <li>نوع متغیر قابل تغییر نیست</li>
+          <li>خطاهای نوعی در زمان <b>کامپایل</b> شناسایی می‌شوند</li>
+          <li>کلاس‌های پوششی مثل Integer</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 20 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">📦</div>
+    <div class="sec-num">بخش هفتم</div>
+    <h2 class="both">بسته‌بندی (کپسوله‌سازی)</h2>
+    <p class="subtitle">پنهان‌سازی و کپسوله‌سازی داده</p>
+  </section>
+
+  <!-- 21 -->
+  <section class="slide">
+    <h2>بسته‌بندی در <span class="js">جاوا اسکریپت</span></h2>
+    <div class="divider"></div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="code-title">counter.js — نمونه کد</span>
+      </div>
+      <div class="code-body">
+        <div class="code-line"><span class="cm-line">// کپسوله‌سازی با بستار (Closure)</span></div>
+        <div class="code-line"><span class="kw">function</span> <span class="fn">createCounter</span>() {</div>
+        <div class="code-line">&nbsp;&nbsp;<span class="kw">let</span> count = <span class="num">0</span>;</div>
+        <div class="code-line">&nbsp;&nbsp;<span class="kw">return</span> {</div>
+        <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">increment</span>: () =&gt; ++count,</div>
+        <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">get</span>: () =&gt; count</div>
+        <div class="code-line">&nbsp;&nbsp;};</div>
+        <div class="code-line">}</div>
+        <div class="code-line">&nbsp;</div>
+        <div class="code-line"><span class="kw">const</span> counter = <span class="fn">createCounter</span>();</div>
+        <div class="code-line">counter.<span class="fn">increment</span>();</div>
+        <div class="code-line">console.<span class="fn">log</span>(counter.<span class="fn">get</span>()); <span class="cm">// 1</span></div>
+      </div>
+    </div>
+    <div class="note"><b>ویژگی:</b> کپسوله‌سازی با بستار یا فیلدهای خصوصی (#) در کلاس‌ها.</div>
+  </section>
+
+  <!-- 22 -->
+  <section class="slide">
+    <h2>بسته‌بندی در <span class="java">جاوا</span></h2>
+    <div class="divider"></div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="code-title">Counter.java — نمونه کد</span>
+      </div>
+      <div class="code-body">
+        <div class="code-line"><span class="cm-line">// کپسوله‌سازی با getter و setter</span></div>
+        <div class="code-line"><span class="kw">public class</span> <span class="ty">Counter</span> {</div>
+        <div class="code-line">&nbsp;&nbsp;<span class="kw">private int</span> count = <span class="num">0</span>;</div>
+        <div class="code-line">&nbsp;</div>
+        <div class="code-line">&nbsp;&nbsp;<span class="kw">public void</span> <span class="fn">increment</span>() {</div>
+        <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;count++;</div>
+        <div class="code-line">&nbsp;&nbsp;}</div>
+        <div class="code-line">&nbsp;</div>
+        <div class="code-line">&nbsp;&nbsp;<span class="kw">public int</span> <span class="fn">getCount</span>() {</div>
+        <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> count;</div>
+        <div class="code-line">&nbsp;&nbsp;}</div>
+        <div class="code-line">}</div>
+      </div>
+    </div>
+    <div class="note"><b>ویژگی:</b> کپسوله‌سازی با اصلاح‌گرهایی مانند private، protected، public.</div>
+  </section>
+
+  <!-- 23 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">🔀</div>
+    <div class="sec-num">بخش هشتم</div>
+    <h2 class="both">کنترل ترتیب اجرای دستورات</h2>
+    <p class="subtitle">جریان اجرا، شرط‌ها و حلقه‌ها</p>
+  </section>
+
+  <!-- 24 -->
+  <section class="slide">
+    <h2>کنترل ترتیب اجرا در <span class="js">جاوا اسکریپت</span></h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card js-card">
+        <span class="icon">🔁</span>
+        <span class="tag">جریان کنترل</span>
+        <ul>
+          <li>شرط if / else، انتخاب switch، خطاگیری try/catch</li>
+          <li>حلقه‌های for، while، do...while</li>
+          <li>for...of و for...in برای پیمایش</li>
+          <li><b>ناهمگام / منتظر</b> برای کنترل اجرای غیرهمزمان</li>
+          <li>پرامیس و حلقه‌ی رویداد ترتیب اجرا را تعیین می‌کنند</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><b>ویژگی:</b> اجرای غیرهمزمان و رویدادمحور، هسته‌ی رفتار جاوا اسکریپت است.</div>
+  </section>
+
+  <!-- 25 -->
+  <section class="slide">
+    <h2>کنترل ترتیب اجرا در <span class="java">جاوا</span></h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card java-card">
+        <span class="icon">🔂</span>
+        <span class="tag">جریان کنترل</span>
+        <ul>
+          <li>شرط if / else، انتخاب switch، خطاگیری try/catch/finally</li>
+          <li>حلقه‌های for، while، do...while</li>
+          <li>for-each برای پیمایش مجموعه‌ها</li>
+          <li>ترتیب اجرای دستورات کاملاً <b>همزمان</b></li>
+          <li>برای همزمانی از نخ و اجراکننده استفاده می‌شود</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><b>ویژگی:</b> اجرای خطی و همزمان؛ همزمانی با مدل مبتنی بر نخ.</div>
+  </section>
+
+  <!-- 26 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">🧮</div>
+    <div class="sec-num">بخش نهم</div>
+    <h2 class="both">کنترل ترتیب زیربرنامه‌ها</h2>
+    <p class="subtitle">توابع، متدها و فراخوانی‌ها</p>
+  </section>
+
+  <!-- 27 -->
+  <section class="slide">
+    <h2>کنترل زیربرنامه‌ها در <span class="js">جاوا اسکریپت</span></h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card js-card">
+        <span class="icon">⚡</span>
+        <span class="tag">توابع</span>
+        <ul>
+          <li>توابع <b>مرتبه‌ی اول</b> — قابل ذخیره و ارسال</li>
+          <li>توابع پیکانی و بستار</li>
+          <li>توابع <b>بالا کشیده</b> می‌شوند (تعریف تابع)</li>
+          <li>فراخوانی‌های ناهمگام با پرامیس و منتظر</li>
+          <li>پشته‌ی فراخوانی و حلقه‌ی رویداد، ترتیب فراخوانی را مدیریت می‌کنند</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 28 -->
+  <section class="slide">
+    <h2>کنترل زیربرنامه‌ها در <span class="java">جاوا</span></h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card java-card">
+        <span class="icon">🧷</span>
+        <span class="tag">متدها</span>
+        <ul>
+          <li>متدها عضو کلاس هستند</li>
+          <li>سربارگذاری و بازنویسی با قواعد مشخص</li>
+          <li>متد main نقطه‌ی شروع اجراست</li>
+          <li>فراخوانی‌ها همیشه <b>همزمان</b> هستند</li>
+          <li>بازگشت نوع مشخص، بدون بالا کشیدن</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 29 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">💾</div>
+    <div class="sec-num">بخش دهم</div>
+    <h2 class="both">مدیریت حافظه</h2>
+    <p class="subtitle">تخصیص، پاکسازی و زباله‌روبی</p>
+  </section>
+
+  <!-- 30 -->
+  <section class="slide">
+    <h2>مدیریت حافظه در <span class="js">جاوا اسکریپت</span></h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card js-card">
+        <span class="icon">🧹</span>
+        <span class="tag">حافظه</span>
+        <ul>
+          <li>حافظه در دو بخش: <b>پشته</b> و <b>کپه</b></li>
+          <li>مدیریت خودکار با <b>زباله‌روب</b> (نشانه‌گذاری و پاکسازی)</li>
+          <li>برنامه‌نویس معمولاً درگیر تخصیص/آزادسازی حافظه نیست</li>
+          <li>خطر <b>نشت حافظه</b> با بستارهای نادرست</li>
+          <li>ابزار توسعه‌دهنده برای تحلیل حافظه</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 31 -->
+  <section class="slide">
+    <h2>مدیریت حافظه در <span class="java">جاوا</span></h2>
+    <div class="divider"></div>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card java-card">
+        <span class="icon">🗄️</span>
+        <span class="tag">حافظه</span>
+        <ul>
+          <li>حافظه در <b>پشته</b>، <b>کپه</b> و <b>متافضا</b></li>
+          <li><b>زباله‌روب</b> پیشرفته (سریال، جی۱، زد‌جی‌سی)</li>
+          <li>کنترل دستی حافظه وجود ندارد (بدون اشاره‌گر)</li>
+          <li>تنظیم اندازه کپه با پارامترهای ماشین مجازی</li>
+          <li>ابزارهایی مثل ویژوال‌وی‌ام و جی‌پروفایلر</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 32 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">🆚</div>
+    <div class="sec-num">بخش یازدهم</div>
+    <h2 class="both">جدول مقایسه‌ی نهایی</h2>
+    <p class="subtitle">یک نگاه سریع به تفاوت‌ها</p>
+  </section>
+
+  <!-- 33 -->
+  <section class="slide">
+    <h2>مقایسه‌ی <span class="js">جاوا اسکریپت</span> و <span class="java">جاوا</span></h2>
+    <div class="divider"></div>
+    <div class="table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th class="feat-col">ویژگی</th>
+            <th class="js-col">جاوا اسکریپت</th>
+            <th class="java-col">جاوا</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>نوع تایپ</td><td>پویا</td><td>ایستا</td></tr>
+          <tr><td>اجرا</td><td>تفسیری + کامپایل در لحظه</td><td>کامپایل به بایت‌کد + ماشین مجازی</td></tr>
+          <tr><td>مدل همزمانی</td><td>حلقه‌ی رویداد</td><td>مبتنی بر نخ</td></tr>
+          <tr><td>وراثت</td><td>پروتوتایپ</td><td>مبتنی بر کلاس</td></tr>
+          <tr><td>نقطه شروع</td><td>هرجای کد</td><td>متد main</td></tr>
+          <tr><td>محیط اجرا</td><td>مرورگر / Node.js</td><td>ماشین مجازی جاوا</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 34 -->
+  <section class="slide">
+    <h2>جایگاه در <span class="both">دنیای واقعی</span></h2>
+    <div class="divider"></div>
+    <div class="stats">
+      <div class="stat">
+        <div class="num">۹۸٪</div>
+        <div class="lbl">از وب‌سایت‌ها از جاوا اسکریپت استفاده می‌کنند</div>
+      </div>
+      <div class="stat">
+        <div class="num">۳M+</div>
+        <div class="lbl">اپلیکیشن اندروید با جاوا</div>
+      </div>
+      <div class="stat">
+        <div class="num">#۱</div>
+        <div class="lbl">جاوا اسکریپت محبوب‌ترین زبان (گیت‌هاب)</div>
+      </div>
+      <div class="stat">
+        <div class="num">۲۵+</div>
+        <div class="lbl">سال پشتیبانی جاوا در سازمان‌ها</div>
+      </div>
+      <div class="stat">
+        <div class="num">۶۰٪</div>
+        <div class="lbl">بک‌اندهای Node.js در استارتاپ‌ها</div>
+      </div>
+      <div class="stat">
+        <div class="num">۱۰M+</div>
+        <div class="lbl">توسعه‌دهنده‌ی فعال جاوا</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 35 -->
+  <section class="slide">
+    <h2>نتیجه‌گیری <span class="both">🎯</span></h2>
+    <div class="divider"></div>
+    <div class="cards">
+      <div class="card js-card">
+        <span class="icon">🟨</span>
+        <span class="tag">جاوا اسکریپت</span>
+        <ul>
+          <li>انعطاف و سرعت توسعه</li>
+          <li>گزینه‌ی اول برای وب</li>
+          <li>اکوسیستم بی‌نظیر ان‌پی‌ام</li>
+        </ul>
+      </div>
+      <div class="card java-card">
+        <span class="icon">☕</span>
+        <span class="tag">جاوا</span>
+        <ul>
+          <li>پایداری و امنیت نوع</li>
+          <li>گزینه‌ی اول برای سازمان‌ها</li>
+          <li>اکوسیستم بالغ و قدرتمند</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note" style="text-align:center; font-size:clamp(0.85rem,1.3vw,1.1rem);">
+      <b>پیام نهایی:</b> این دو زبان رقیب نیستند — برای مسائل متفاوتی ساخته شده‌اند.
+    </div>
+  </section>
+
+  <!-- 36 -->
+  <section class="slide section-slide">
+    <div class="sec-icon">🙏</div>
+    <h2 class="both">با تشکر از توجه شما</h2>
+    <p class="subtitle" style="font-size:clamp(0.95rem,1.5vw,1.2rem); margin-top:16px;">محمد جواد پارسا &nbsp;•&nbsp; علی خان محمدی</p>
+    <div class="divider" style="margin-top:24px;"></div>
+    <p class="subtitle">پرسشی دارید؟</p>
+  </section>
+
+</div>
+
+<!-- Navigation — دکمه‌های متنی -->
+<div class="nav-arrows">
+  <button class="nav-btn prev-btn" id="prevBtn" title="اسلاید قبلی">
+    <span class="arrow">▲</span>
+    <span class="label">اسلاید قبلی</span>
+  </button>
+  <span class="counter" id="counter">1 / 36</span>
+  <button class="nav-btn next-btn" id="nextBtn" title="اسلاید بعدی">
+    <span class="label">اسلاید بعدی</span>
+    <span class="arrow">▼</span>
+  </button>
+</div>
+
+<div class="hint">
+  <kbd>Space</kbd> یا <kbd>↑</kbd> <kbd>↓</kbd> برای ناوبری
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ===== ذرات =====
+  const particleContainer = document.getElementById('particles');
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const particleCount = isMobile ? 18 : 35;
+  const colors = [
+    { c: '#c6f432', g: 'rgba(198,244,50,0.9)' },
+    { c: '#7fffd4', g: 'rgba(127,255,212,0.9)' },
+    { c: '#ff7a5c', g: 'rgba(255,122,92,0.9)' },
+    { c: '#f7df1e', g: 'rgba(247,223,30,0.9)' }
+  ];
+  for (let i = 0; i < particleCount; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = (1 + Math.random() * 3) * (isMobile ? 0.8 : 1);
+    const col = colors[Math.floor(Math.random() * colors.length)];
+    p.style.left = Math.random() * 100 + '%';
+    p.style.width = p.style.height = size + 'px';
+    p.style.background = col.c;
+    p.style.boxShadow = '0 0 ' + (6 + Math.random() * 10) + 'px ' + col.g;
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (-Math.random() * 18) + 's';
+    p.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+    particleContainer.appendChild(p);
+  }
+
+  // ===== Navigation =====
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const progressBar = document.getElementById('progressBar');
+  const counter = document.getElementById('counter');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const deck = document.getElementById('deck');
+  const fsBtn = document.getElementById('fsBtn');
+  let current = 0;
+  let isTransitioning = false;
+
+  function updateUI() {
+    progressBar.style.width = ((current + 1) / total * 100) + '%';
+    counter.textContent = (current + 1) + ' / ' + total;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  // ===== انتقال با انیمیشن =====
+  function goTo(index, direction) {
+    if (isTransitioning) return;
+    if (index < 0 || index >= total || index === current) return;
+    isTransitioning = true;
+
+    const outgoing = slides[current];
+    const incoming = slides[index];
+
+    // پاک کردن کلاس‌های قدیمی از همه
+    slides.forEach(s => {
+      s.classList.remove('active', 'enter-from-bottom', 'enter-from-top', 'exit-to-top', 'exit-to-bottom');
+    });
+
+    // خروج اسلاید فعلی
+    outgoing.classList.add('active');
+    if (direction === 'forward') {
+      outgoing.classList.add('exit-to-top');
+    } else {
+      outgoing.classList.add('exit-to-bottom');
+    }
+
+    // ورود اسلاید جدید
+    current = index;
+    incoming.classList.add('active');
+    if (direction === 'forward') {
+      incoming.classList.add('enter-from-bottom');
+    } else {
+      incoming.classList.add('enter-from-top');
+    }
+
+    // پاکسازی کلاس‌های انیمیشن پس از اتمام
+    setTimeout(() => {
+      outgoing.classList.remove('active', 'exit-to-top', 'exit-to-bottom');
+      incoming.classList.remove('enter-from-bottom', 'enter-from-top');
+      incoming.classList.add('active');
+      isTransitioning = false;
+    }, 900);
+
+    updateUI();
+  }
+
+  function next() { goTo(current + 1, 'forward'); }
+  function prev() { goTo(current - 1, 'backward'); }
+
+  // ===== Keyboard — فقط Space و Arrow Up/Down =====
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    switch (e.key) {
+      case ' ':
+      case 'Spacebar':
+      case 'ArrowDown':
+        e.preventDefault();
+        next();
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        prev();
+        break;
+      case 'Home':
+        e.preventDefault();
+        goTo(0, 'backward');
+        break;
+      case 'End':
+        e.preventDefault();
+        goTo(total - 1, 'forward');
+        break;
+      case 'f':
+      case 'F':
+        toggleFullscreen();
+        break;
+    }
+  });
+
+  // ===== دکمه‌ها =====
+  prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+  nextBtn.addEventListener('click', (e) => { e.stopPropagation(); next(); });
+
+  // ===== Tap zones (برای موبایل) =====
+  document.getElementById('tapPrev').addEventListener('click', prev);
+  document.getElementById('tapNext').addEventListener('click', next);
+
+  // ===== Touch swipe — عمودی و افقی =====
+  let tStartX = 0, tStartY = 0, tStartTime = 0;
+  deck.addEventListener('touchstart', (e) => {
+    tStartX = e.changedTouches[0].screenX;
+    tStartY = e.changedTouches[0].screenY;
+    tStartTime = Date.now();
+  }, { passive: true });
+
+  deck.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].screenX - tStartX;
+    const dy = e.changedTouches[0].screenY - tStartY;
+    const dt = Date.now() - tStartTime;
+    const threshold = dt < 300 ? 30 : 60;
+    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > threshold * 1.2) {
+      if (dy > 0) prev(); else next();
+    } else if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > threshold * 1.5) {
+      // سوایپ افقی هم کار می‌کنه (فقط برای موبایل)
+      if (dx > 0) prev(); else next();
+    }
+  }, { passive: true });
+
+  // ===== Wheel — عمودی =====
+  let wheelLock = false;
+  deck.addEventListener('wheel', (e) => {
+    if (wheelLock) return;
+    if (Math.abs(e.deltaY) < 30) return;
+    wheelLock = true;
+    if (e.deltaY > 0) next(); else prev();
+    setTimeout(() => { wheelLock = false; }, 900);
+  }, { passive: true });
+
+  // ===== Fullscreen =====
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      const el = document.documentElement;
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      else if (el.msRequestFullscreen) el.msRequestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
+  }
+  fsBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFullscreen(); });
+
+  document.addEventListener('contextmenu', (e) => {
+    if (e.target.closest('.code-block, input, textarea')) return;
+    e.preventDefault();
+  });
+
+  document.addEventListener('touchmove', (e) => {
+    if (e.target.closest('.code-body, .table-wrap')) return;
+    const slide = e.target.closest('.slide');
+    if (slide && slide.scrollHeight > slide.clientHeight) return;
+    e.preventDefault();
+  }, { passive: false });
+
+  updateUI();
+})();
+</script>
+</body>
+</html>
