@@ -24,27 +24,24 @@
     --muted: #8b9bc4;
 
     --blue: #5b8dff;
-    --blue-soft: #7ba5ff;
     --violet: #a78bfa;
     --cyan: #22d3ee;
-    --pink: #f472b6;
     --amber: #fbbf24;
 
     --grad: linear-gradient(135deg, #5b8dff 0%, #a78bfa 50%, #22d3ee 100%);
-    --grad-warm: linear-gradient(135deg, #fbbf24 0%, #ff8a3d 100%);
 
     --fs-h1: clamp(1.5rem, 6vw, 4rem);
     --fs-h2: clamp(1.15rem, 4.5vw, 2.3rem);
     --fs-h2-sec: clamp(1.4rem, 6vw, 2.9rem);
-    --fs-body: clamp(0.82rem, 3.4vw, 1.05rem);
-    --fs-sub: clamp(0.8rem, 3.2vw, 1.12rem);
-    --fs-code: clamp(0.68rem, 2.6vw, 0.92rem);
+    --fs-body: clamp(0.85rem, 3.4vw, 1.05rem);
+    --fs-sub: clamp(0.82rem, 3.2vw, 1.12rem);
+    --fs-code: clamp(0.7rem, 2.6vw, 0.92rem);
     --fs-tag: clamp(0.65rem, 2.6vw, 0.82rem);
     --fs-icon: clamp(1.6rem, 6vw, 2.6rem);
     --fs-sec-icon: clamp(2.5rem, 12vw, 5.5rem);
     --fs-stat: clamp(1.3rem, 6vw, 2.5rem);
-    --fs-name: clamp(0.78rem, 3vw, 1.05rem);
-    --fs-role: clamp(0.62rem, 2.4vw, 0.8rem);
+    --fs-name: clamp(0.8rem, 3vw, 1.05rem);
+    --fs-role: clamp(0.65rem, 2.4vw, 0.8rem);
 
     --pad-slide: clamp(14px, 5vw, 80px);
     --gap-card: clamp(10px, 3vw, 22px);
@@ -63,86 +60,44 @@
     -webkit-text-size-adjust: 100%;
   }
 
-  /* ===== Background ===== */
-  .bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  /* ===== Background — سبک ===== */
+  .bg-glow {
+    position: fixed;
+    width: 60vw;
+    height: 60vw;
+    max-width: 700px;
+    max-height: 700px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.22;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-1 { background: var(--blue); top: -20%; right: -20%; }
+  .glow-2 { background: var(--violet); bottom: -20%; left: -20%; opacity: 0.18; }
 
   .bg-grid {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
     background-image:
-      linear-gradient(rgba(91,141,255,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(91,141,255,0.06) 1px, transparent 1px);
+      linear-gradient(rgba(91,141,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(91,141,255,0.05) 1px, transparent 1px);
     background-size: 44px 44px;
     mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 20%, transparent 80%);
     -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 20%, transparent 80%);
   }
 
-  .bg-glow {
-    width: clamp(280px, 70vw, 800px);
-    height: clamp(280px, 70vw, 800px);
-    border-radius: 50%;
-    filter: blur(clamp(70px, 18vw, 160px));
-    opacity: 0.28;
-    position: absolute;
-    animation: drift 20s ease-in-out infinite;
-  }
-  .glow-1 { background: var(--blue); top: -25%; right: -20%; }
-  .glow-2 { background: var(--violet); bottom: -25%; left: -20%; opacity: 0.22; animation-delay: -7s; }
-  .glow-3 { background: var(--cyan); top: 30%; right: 40%; opacity: 0.12; animation-delay: -13s; }
-
-  @keyframes drift {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    33% { transform: translate(40px, -30px) scale(1.08); }
-    66% { transform: translate(-30px, 40px) scale(0.96); }
-  }
-
-  .bg-lines {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image: repeating-linear-gradient(
-      45deg,
-      transparent 0,
-      transparent 60px,
-      rgba(91,141,255,0.03) 60px,
-      rgba(91,141,255,0.03) 61px
-    );
-    mask-image: radial-gradient(ellipse at center, black 40%, transparent 90%);
-    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 90%);
-  }
-
-  .particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
-  .particle {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0;
-    animation: floatParticle linear infinite;
-    will-change: transform, opacity;
-  }
-  @keyframes floatParticle {
-    0% { transform: translateY(110vh) translateX(0) scale(0.5); opacity: 0; }
-    10% { opacity: 1; }
-    60% { opacity: 0.8; }
-    100% { transform: translateY(-10vh) translateX(var(--drift, 20px)) scale(1); opacity: 0; }
-  }
-
-  .scanlines {
-    position: fixed; inset: 0; z-index: 1; pointer-events: none;
-    background: repeating-linear-gradient(0deg,
-      rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px,
-      rgba(91,141,255,0.02) 3px, rgba(0,0,0,0) 4px);
-    opacity: 0.5;
-  }
-
-  .vignette {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.45) 100%);
-  }
-
   /* ===== Deck ===== */
-  .deck { position: relative; width: 100vw; height: 100vh; height: 100dvh; z-index: 2; overflow: hidden; perspective: 2000px; }
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 2;
+    overflow: hidden;
+  }
 
   .slide {
     position: absolute;
@@ -151,46 +106,40 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 56px var(--pad-slide) 96px;
+    padding: 56px var(--pad-slide) 90px;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    will-change: transform, opacity, filter;
+    /* انیمیشن ساده — فقط opacity و translateY */
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s linear 0.4s;
   }
   .slide.active {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+    transform: translateY(0);
     z-index: 1;
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s linear 0s;
   }
 
-  .slide.enter-from-bottom { animation: enterFromBottom .8s cubic-bezier(.16,1,.3,1) forwards; }
-  @keyframes enterFromBottom {
-    0% { opacity: 0; transform: translate3d(0, 100px, -200px) rotateX(12deg) scale(0.94); filter: blur(10px); }
-    60% { opacity: 1; filter: blur(0); }
-    100% { opacity: 1; transform: translate3d(0, 0, 0) rotateX(0deg) scale(1); filter: blur(0); }
+  /* اسلایدی که داره می‌ره بالا (به جلو) */
+  .slide.exit-up {
+    opacity: 0;
+    transform: translateY(-20px);
+    visibility: hidden;
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0.35s;
   }
 
-  .slide.exit-to-top { animation: exitToTop .7s cubic-bezier(.55,0,.75,.4) forwards; pointer-events: none; }
-  @keyframes exitToTop {
-    0% { opacity: 1; transform: translate3d(0, 0, 0) rotateX(0deg) scale(1); filter: blur(0); }
-    100% { opacity: 0; transform: translate3d(0, -120px, -300px) rotateX(-12deg) scale(0.88); filter: blur(14px); }
-  }
-
-  .slide.enter-from-top { animation: enterFromTop .8s cubic-bezier(.16,1,.3,1) forwards; }
-  @keyframes enterFromTop {
-    0% { opacity: 0; transform: translate3d(0, -100px, -200px) rotateX(-12deg) scale(0.94); filter: blur(10px); }
-    60% { opacity: 1; filter: blur(0); }
-    100% { opacity: 1; transform: translate3d(0, 0, 0) rotateX(0deg) scale(1); filter: blur(0); }
-  }
-
-  .slide.exit-to-bottom { animation: exitToBottom .7s cubic-bezier(.55,0,.75,.4) forwards; pointer-events: none; }
-  @keyframes exitToBottom {
-    0% { opacity: 1; transform: translate3d(0, 0, 0) rotateX(0deg) scale(1); filter: blur(0); }
-    100% { opacity: 0; transform: translate3d(0, 120px, -300px) rotateX(12deg) scale(0.88); filter: blur(14px); }
+  /* اسلایدی که داره می‌ره پایین (به عقب) */
+  .slide.exit-down {
+    opacity: 0;
+    transform: translateY(20px);
+    visibility: hidden;
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0.35s;
   }
 
   /* ===== Typography ===== */
@@ -202,9 +151,8 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
-    line-height: 1.25;
+    line-height: 1.3;
     letter-spacing: -0.5px;
-    filter: drop-shadow(0 0 40px rgba(91,141,255,0.45));
     word-wrap: break-word;
   }
   h2 {
@@ -215,14 +163,13 @@
     line-height: 1.5;
     word-wrap: break-word;
   }
-  h2 .js { color: var(--js); text-shadow: 0 0 25px rgba(247,223,30,0.5); }
-  h2 .java { color: var(--java); text-shadow: 0 0 25px rgba(255,138,61,0.5); }
+  h2 .js { color: var(--js); }
+  h2 .java { color: var(--java); }
   h2 .both {
     background: var(--grad);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 25px rgba(91,141,255,0.45));
   }
 
   .subtitle {
@@ -240,7 +187,6 @@
     background: var(--grad);
     border-radius: 2px;
     margin: clamp(10px, 2vh, 18px) auto clamp(14px, 3vh, 30px);
-    box-shadow: 0 0 25px rgba(91,141,255,0.7);
     flex-shrink: 0;
   }
 
@@ -262,32 +208,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: clamp(14px, 4vw, 28px);
-    position: relative;
-    overflow: hidden;
-    transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s, border-color .35s;
     min-width: 0;
-  }
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0;
-    width: 160px; height: 160px;
-    background: radial-gradient(circle at top right, rgba(91,141,255,0.18), transparent 70%);
-    opacity: 0;
-    transition: opacity .35s;
-    pointer-events: none;
-  }
-  @media (hover: hover) {
-    .card:hover { transform: translateY(-6px); border-color: var(--border-hi); }
-    .card:hover::before { opacity: 1; }
-    .card.js-card:hover {
-      border-color: var(--js);
-      box-shadow: 0 24px 60px rgba(247,223,30,0.18), 0 0 0 1px rgba(247,223,30,0.2);
-    }
-    .card.java-card:hover {
-      border-color: var(--java);
-      box-shadow: 0 24px 60px rgba(255,138,61,0.18), 0 0 0 1px rgba(255,138,61,0.2);
-    }
   }
   .card.js-card { border-top: 3px solid var(--js); }
   .card.java-card { border-top: 3px solid var(--java); }
@@ -317,7 +238,6 @@
     font-size: var(--fs-icon);
     margin-bottom: clamp(6px, 1.5vw, 12px);
     display: block;
-    filter: drop-shadow(0 0 18px rgba(91,141,255,0.55));
     line-height: 1;
   }
 
@@ -355,7 +275,6 @@
     font-size: var(--fs-code);
     line-height: 1.7;
     overflow: hidden;
-    box-shadow: 0 16px 50px rgba(0,0,0,0.6);
   }
   .code-header {
     display: flex;
@@ -421,8 +340,6 @@
     border: 1px solid rgba(34,211,238,0.4);
     border-radius: 50px;
     background: rgba(34,211,238,0.08);
-    box-shadow: 0 0 25px rgba(34,211,238,0.35);
-    animation: floaty 3s ease-in-out infinite;
     white-space: nowrap;
   }
   .cover .vs-big {
@@ -440,27 +357,21 @@
     border-radius: 50px;
     border: 1px solid var(--border);
     background: var(--card);
-    transition: all .3s;
     white-space: nowrap;
   }
   .cover .lang-pill.js-p {
     color: var(--js);
     border-color: rgba(247,223,30,0.5);
-    box-shadow: 0 0 30px rgba(247,223,30,0.3);
   }
   .cover .lang-pill.java-p {
     color: var(--java);
     border-color: rgba(255,138,61,0.5);
-    box-shadow: 0 0 30px rgba(255,138,61,0.3);
   }
   .cover .sword {
     color: var(--blue);
     font-size: clamp(1rem, 3.5vw, 1.6rem);
-    animation: spin 4s linear infinite;
     display: inline-block;
-    filter: drop-shadow(0 0 15px rgba(91,141,255,0.9));
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
 
   .cover .presenters {
     margin-top: clamp(14px, 3vh, 30px);
@@ -478,15 +389,6 @@
     border: 1px solid var(--border);
     border-radius: clamp(10px, 3vw, 16px);
     padding: clamp(8px, 2.5vw, 14px) clamp(12px, 4vw, 24px);
-    transition: all .3s;
-    backdrop-filter: blur(8px);
-  }
-  @media (hover: hover) {
-    .presenter:hover {
-      border-color: var(--blue);
-      transform: translateY(-4px);
-      box-shadow: 0 15px 40px rgba(91,141,255,0.25);
-    }
   }
   .avatar {
     width: clamp(32px, 9vw, 46px);
@@ -495,7 +397,6 @@
     background: var(--grad);
     display: flex; align-items: center; justify-content: center;
     font-weight: 900; color: #0f1420; font-size: clamp(0.85rem, 3.2vw, 1.2rem);
-    box-shadow: 0 0 22px rgba(91,141,255,0.6);
     flex-shrink: 0;
   }
   .presenter .name { font-weight: 800; font-size: var(--fs-name); line-height: 1.4; }
@@ -514,8 +415,6 @@
   .section-slide .sec-icon {
     font-size: var(--fs-sec-icon);
     margin-bottom: clamp(10px, 2vh, 22px);
-    animation: floaty 3s ease-in-out infinite;
-    filter: drop-shadow(0 0 40px rgba(91,141,255,0.75));
     line-height: 1;
   }
   .section-slide h2 { font-size: var(--fs-h2-sec); }
@@ -525,11 +424,6 @@
     letter-spacing: 4px;
     margin-bottom: clamp(8px, 1.5vh, 14px);
     font-weight: 700;
-    text-shadow: 0 0 22px rgba(34,211,238,0.6);
-  }
-  @keyframes floaty {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
   }
 
   /* ===== Table ===== */
@@ -539,7 +433,6 @@
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     border-radius: var(--radius);
-    box-shadow: 0 16px 50px rgba(0,0,0,0.5);
   }
   .compare-table {
     width: 100%;
@@ -567,9 +460,6 @@
   .compare-table th.feat-col { color: var(--cyan); }
   .compare-table tr:last-child td { border-bottom: none; }
   .compare-table td:first-child { color: var(--muted); font-weight: 700; white-space: nowrap; }
-  @media (hover: hover) {
-    .compare-table tr:hover td { background: rgba(91,141,255,0.06); }
-  }
 
   /* ===== Stats ===== */
   .stats {
@@ -579,7 +469,6 @@
     width: 100%;
     max-width: 1050px;
   }
-
   @media (max-width: 640px) {
     .stats { grid-template-columns: repeat(2, 1fr); }
   }
@@ -593,15 +482,7 @@
     border-radius: var(--radius);
     padding: clamp(12px, 3.5vw, 26px) clamp(8px, 2.5vw, 16px);
     text-align: center;
-    transition: transform .3s, border-color .3s, box-shadow .3s;
     min-width: 0;
-  }
-  @media (hover: hover) {
-    .stat:hover {
-      transform: translateY(-6px);
-      border-color: var(--blue);
-      box-shadow: 0 20px 50px rgba(91,141,255,0.25);
-    }
   }
   .stat .num {
     font-size: var(--fs-stat);
@@ -638,9 +519,8 @@
     top: 0; right: 0;
     height: 3px;
     background: var(--grad);
-    transition: width .5s cubic-bezier(.22,1,.36,1);
+    transition: width 0.4s ease;
     z-index: 100;
-    box-shadow: 0 0 18px rgba(91,141,255,0.9);
     width: 0;
   }
   .nav-arrows {
@@ -653,12 +533,9 @@
     gap: clamp(6px, 1.5vw, 12px);
     z-index: 100;
     background: rgba(21,28,44,0.96);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-hi);
     border-radius: 50px;
     padding: 5px 8px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 30px rgba(91,141,255,0.2);
     max-width: calc(100vw - 20px);
   }
   .nav-btn {
@@ -676,25 +553,20 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    transition: all .3s cubic-bezier(.22,1,.36,1);
     flex-shrink: 0;
     touch-action: manipulation;
     white-space: nowrap;
     position: relative;
     z-index: 1;
+    transition: background 0.2s ease, color 0.2s ease;
   }
-  .nav-btn .arrow { font-size: 0.9rem; transition: transform .3s; }
+  .nav-btn .arrow { font-size: 0.9rem; }
   .nav-btn .label { display: inline; }
-  @media (hover: hover) {
-    .nav-btn:hover:not(:disabled) {
-      background: var(--blue);
-      color: #0f1420;
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(91,141,255,0.9);
-    }
+  .nav-btn:hover:not(:disabled) {
+    background: var(--blue);
+    color: #0f1420;
   }
   .nav-btn:active:not(:disabled) {
-    transform: scale(0.96);
     background: var(--blue);
     color: #0f1420;
   }
@@ -705,7 +577,6 @@
     font-weight: 800;
     min-width: clamp(48px, 12vw, 62px);
     text-align: center;
-    font-variant-numeric: tabular-nums;
     padding: 0 2px;
     white-space: nowrap;
   }
@@ -713,43 +584,6 @@
   @media (max-width: 480px) {
     .nav-btn .label { display: none; }
     .nav-btn { padding: 0 clamp(12px, 4vw, 16px); }
-  }
-
-  .hint {
-    position: fixed;
-    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    right: clamp(10px, 3vw, 24px);
-    font-size: 0.7rem;
-    color: var(--muted);
-    opacity: 0.55;
-    z-index: 100;
-    display: flex; align-items: center; gap: 5px;
-  }
-  @media (max-width: 900px) {
-    .hint { display: none; }
-  }
-  .hint kbd {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 2px 6px;
-    font-family: inherit;
-    font-size: inherit;
-  }
-
-  .tap-zone {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    width: 22%;
-    z-index: 90;
-    cursor: pointer;
-  }
-  .tap-zone.left { left: 0; }
-  .tap-zone.right { right: 0; }
-
-  @media (hover: hover) and (pointer: fine) {
-    .tap-zone { display: none; }
   }
 
   .fs-btn {
@@ -766,63 +600,21 @@
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     z-index: 100;
-    transition: all .25s;
     touch-action: manipulation;
   }
-  @media (hover: hover) {
-    .fs-btn:hover {
-      border-color: var(--blue);
-      color: var(--blue);
-      transform: scale(1.08);
-      box-shadow: 0 0 18px rgba(91,141,255,0.6);
-    }
-  }
 
-  /* ===== آبشار محتوا ===== */
-  .slide.enter-from-bottom .card,
-  .slide.enter-from-bottom .stat,
-  .slide.enter-from-bottom .note,
-  .slide.enter-from-bottom .code-block,
-  .slide.enter-from-bottom .table-wrap,
-  .slide.enter-from-bottom .presenter,
-  .slide.enter-from-top .card,
-  .slide.enter-from-top .stat,
-  .slide.enter-from-top .note,
-  .slide.enter-from-top .code-block,
-  .slide.enter-from-top .table-wrap,
-  .slide.enter-from-top .presenter {
-    animation: contentCascade .55s cubic-bezier(.16,1,.3,1) both;
+  .tap-zone {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 22%;
+    z-index: 90;
+    cursor: pointer;
   }
-  .slide.enter-from-bottom .card:nth-child(2),
-  .slide.enter-from-bottom .stat:nth-child(2),
-  .slide.enter-from-bottom .presenter:nth-child(2),
-  .slide.enter-from-top .card:nth-child(2),
-  .slide.enter-from-top .stat:nth-child(2),
-  .slide.enter-from-top .presenter:nth-child(2) { animation-delay: .1s; }
-  .slide.enter-from-bottom .card:nth-child(3),
-  .slide.enter-from-bottom .stat:nth-child(3),
-  .slide.enter-from-top .card:nth-child(3),
-  .slide.enter-from-top .stat:nth-child(3) { animation-delay: .2s; }
-  .slide.enter-from-bottom .card:nth-child(4),
-  .slide.enter-from-bottom .stat:nth-child(4),
-  .slide.enter-from-top .card:nth-child(4),
-  .slide.enter-from-top .stat:nth-child(4) { animation-delay: .3s; }
-  .slide.enter-from-bottom .stat:nth-child(5),
-  .slide.enter-from-top .stat:nth-child(5) { animation-delay: .4s; }
-  .slide.enter-from-bottom .stat:nth-child(6),
-  .slide.enter-from-top .stat:nth-child(6) { animation-delay: .5s; }
-
-  @keyframes contentCascade {
-    0% { opacity: 0; transform: translateY(24px) scale(0.96); filter: blur(4px); }
-    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
+  .tap-zone.left { left: 0; }
+  .tap-zone.right { right: 0; }
+  @media (hover: hover) and (pointer: fine) {
+    .tap-zone { display: none; }
   }
 
   @media (max-width: 380px) {
@@ -830,7 +622,7 @@
       --pad-slide: 12px;
       --gap-card: 8px;
     }
-    .slide { padding: 50px 12px 90px; }
+    .slide { padding: 50px 12px 86px; }
     .cover .badge-top { letter-spacing: 2px; padding: 4px 12px; }
     .nav-btn { height: 34px; padding: 0 10px; }
     .counter { min-width: 44px; font-size: 0.62rem; }
@@ -860,15 +652,9 @@
 </head>
 <body>
 
-<div class="bg-layer bg-grid"></div>
+<div class="bg-grid"></div>
 <div class="bg-glow glow-1"></div>
 <div class="bg-glow glow-2"></div>
-<div class="bg-glow glow-3"></div>
-<div class="bg-lines"></div>
-
-<div class="particles" id="particles"></div>
-<div class="scanlines"></div>
-<div class="vignette"></div>
 
 <div class="progress-bar" id="progressBar"></div>
 
@@ -879,7 +665,6 @@
 
 <div class="deck" id="deck">
 
-  <!-- 1 -->
   <section class="slide active">
     <div class="cover">
       <div class="badge-top">✦ ارائه آموزشی ✦</div>
@@ -909,7 +694,6 @@
     </div>
   </section>
 
-  <!-- 2 -->
   <section class="slide section-slide">
     <div class="sec-icon">🧭</div>
     <div class="sec-num">بخش اول</div>
@@ -917,7 +701,6 @@
     <p class="subtitle">جاوا اسکریپت چیست؟ جاوا چیست؟</p>
   </section>
 
-  <!-- 3 -->
   <section class="slide">
     <h2><span class="js">جاوا اسکریپت</span> چیست؟</h2>
     <div class="divider"></div>
@@ -937,7 +720,6 @@
     <div class="note"><b>نکته:</b> نامش شبیه جاوا است، اما از نظر طراحی و فلسفه کاملاً متفاوت‌اند — فقط برای بازاریابی!</div>
   </section>
 
-  <!-- 4 -->
   <section class="slide">
     <h2><span class="java">جاوا</span> چیست؟</h2>
     <div class="divider"></div>
@@ -957,7 +739,6 @@
     <div class="note"><b>نکته:</b> جاوا و جاوا اسکریپت دو زبان مستقل هستند — اشتراک نام فقط یک تصمیم تاریخی است.</div>
   </section>
 
-  <!-- 5 -->
   <section class="slide section-slide">
     <div class="sec-icon">🗺️</div>
     <div class="sec-num">بخش دوم</div>
@@ -965,7 +746,6 @@
     <p class="subtitle">هر زبان، کجا می‌درخشد؟</p>
   </section>
 
-  <!-- 6 -->
   <section class="slide">
     <h2>حوزه‌های برنامه‌نویسی در <span class="js">جاوا اسکریپت</span></h2>
     <div class="divider"></div>
@@ -1005,7 +785,6 @@
     </div>
   </section>
 
-  <!-- 7 -->
   <section class="slide">
     <h2>حوزه‌های برنامه‌نویسی در <span class="java">جاوا</span></h2>
     <div class="divider"></div>
@@ -1045,7 +824,6 @@
     </div>
   </section>
 
-  <!-- 8 -->
   <section class="slide section-slide">
     <div class="sec-icon">🏛️</div>
     <div class="sec-num">بخش سوم</div>
@@ -1053,7 +831,6 @@
     <p class="subtitle">فلسفه‌ی پشت هر زبان</p>
   </section>
 
-  <!-- 9 -->
   <section class="slide">
     <h2>اصول طراحی در <span class="js">جاوا اسکریپت</span></h2>
     <div class="divider"></div>
@@ -1072,7 +849,6 @@
     </div>
   </section>
 
-  <!-- 10 -->
   <section class="slide">
     <h2>اصول طراحی در <span class="java">جاوا</span></h2>
     <div class="divider"></div>
@@ -1091,7 +867,6 @@
     </div>
   </section>
 
-  <!-- 11 -->
   <section class="slide section-slide">
     <div class="sec-icon">⚙️</div>
     <div class="sec-num">بخش چهارم</div>
@@ -1099,7 +874,6 @@
     <p class="subtitle">زبان چگونه با ماشین حرف می‌زند؟</p>
   </section>
 
-  <!-- 12 -->
   <section class="slide">
     <h2>اثرات معماری ماشین در <span class="js">جاوا اسکریپت</span></h2>
     <div class="divider"></div>
@@ -1118,7 +892,6 @@
     </div>
   </section>
 
-  <!-- 13 -->
   <section class="slide">
     <h2>اثرات معماری ماشین در <span class="java">جاوا</span></h2>
     <div class="divider"></div>
@@ -1137,7 +910,6 @@
     </div>
   </section>
 
-  <!-- 14 -->
   <section class="slide section-slide">
     <div class="sec-icon">📚</div>
     <div class="sec-num">بخش پنجم</div>
@@ -1145,7 +917,6 @@
     <p class="subtitle">نحو، ساختار و پایه‌ها</p>
   </section>
 
-  <!-- 15 -->
   <section class="slide">
     <h2>اصول اولیه در <span class="js">جاوا اسکریپت</span></h2>
     <div class="divider"></div>
@@ -1177,7 +948,6 @@
     <div class="note"><b>ویژگی:</b> نحو سبک و انعطاف‌پذیر، بدون نیاز به تعریف نوع.</div>
   </section>
 
-  <!-- 16 -->
   <section class="slide">
     <h2>اصول اولیه در <span class="java">جاوا</span></h2>
     <div class="divider"></div>
@@ -1205,7 +975,6 @@
     <div class="note"><b>ویژگی:</b> نحو صریح، ساختارمند و نیازمند تعریف نوع.</div>
   </section>
 
-  <!-- 17 -->
   <section class="slide section-slide">
     <div class="sec-icon">🔤</div>
     <div class="sec-num">بخش ششم</div>
@@ -1213,7 +982,6 @@
     <p class="subtitle">از عدد تا صحیح و منطقی</p>
   </section>
 
-  <!-- 18 -->
   <section class="slide">
     <h2>نوع داده اولیه در <span class="js">جاوا اسکریپت</span></h2>
     <div class="divider"></div>
@@ -1240,7 +1008,6 @@
     </div>
   </section>
 
-  <!-- 19 -->
   <section class="slide">
     <h2>نوع داده اولیه در <span class="java">جاوا</span></h2>
     <div class="divider"></div>
@@ -1266,7 +1033,6 @@
     </div>
   </section>
 
-  <!-- 20 -->
   <section class="slide section-slide">
     <div class="sec-icon">📦</div>
     <div class="sec-num">بخش هفتم</div>
@@ -1274,7 +1040,6 @@
     <p class="subtitle">پنهان‌سازی و کپسوله‌سازی داده</p>
   </section>
 
-  <!-- 21 -->
   <section class="slide">
     <h2>بسته‌بندی در <span class="js">جاوا اسکریپت</span></h2>
     <div class="divider"></div>
@@ -1303,7 +1068,6 @@
     <div class="note"><b>ویژگی:</b> کپسوله‌سازی با بستار یا فیلدهای خصوصی (#) در کلاس‌ها.</div>
   </section>
 
-  <!-- 22 -->
   <section class="slide">
     <h2>بسته‌بندی در <span class="java">جاوا</span></h2>
     <div class="divider"></div>
@@ -1332,7 +1096,6 @@
     <div class="note"><b>ویژگی:</b> کپسوله‌سازی با اصلاح‌گرهایی مانند private، protected، public.</div>
   </section>
 
-  <!-- 23 -->
   <section class="slide section-slide">
     <div class="sec-icon">🔀</div>
     <div class="sec-num">بخش هشتم</div>
@@ -1340,7 +1103,6 @@
     <p class="subtitle">جریان اجرا، شرط‌ها و حلقه‌ها</p>
   </section>
 
-  <!-- 24 -->
   <section class="slide">
     <h2>کنترل ترتیب اجرا در <span class="js">جاوا اسکریپت</span></h2>
     <div class="divider"></div>
@@ -1360,7 +1122,6 @@
     <div class="note"><b>ویژگی:</b> اجرای غیرهمزمان و رویدادمحور، هسته‌ی رفتار جاوا اسکریپت است.</div>
   </section>
 
-  <!-- 25 -->
   <section class="slide">
     <h2>کنترل ترتیب اجرا در <span class="java">جاوا</span></h2>
     <div class="divider"></div>
@@ -1380,7 +1141,6 @@
     <div class="note"><b>ویژگی:</b> اجرای خطی و همزمان؛ همزمانی با مدل مبتنی بر نخ.</div>
   </section>
 
-  <!-- 26 -->
   <section class="slide section-slide">
     <div class="sec-icon">🧮</div>
     <div class="sec-num">بخش نهم</div>
@@ -1388,7 +1148,6 @@
     <p class="subtitle">توابع، متدها و فراخوانی‌ها</p>
   </section>
 
-  <!-- 27 -->
   <section class="slide">
     <h2>کنترل زیربرنامه‌ها در <span class="js">جاوا اسکریپت</span></h2>
     <div class="divider"></div>
@@ -1407,7 +1166,6 @@
     </div>
   </section>
 
-  <!-- 28 -->
   <section class="slide">
     <h2>کنترل زیربرنامه‌ها در <span class="java">جاوا</span></h2>
     <div class="divider"></div>
@@ -1426,7 +1184,6 @@
     </div>
   </section>
 
-  <!-- 29 -->
   <section class="slide section-slide">
     <div class="sec-icon">💾</div>
     <div class="sec-num">بخش دهم</div>
@@ -1434,7 +1191,6 @@
     <p class="subtitle">تخصیص، پاکسازی و زباله‌روبی</p>
   </section>
 
-  <!-- 30 -->
   <section class="slide">
     <h2>مدیریت حافظه در <span class="js">جاوا اسکریپت</span></h2>
     <div class="divider"></div>
@@ -1453,7 +1209,6 @@
     </div>
   </section>
 
-  <!-- 31 -->
   <section class="slide">
     <h2>مدیریت حافظه در <span class="java">جاوا</span></h2>
     <div class="divider"></div>
@@ -1472,7 +1227,6 @@
     </div>
   </section>
 
-  <!-- 32 -->
   <section class="slide section-slide">
     <div class="sec-icon">🆚</div>
     <div class="sec-num">بخش یازدهم</div>
@@ -1480,7 +1234,6 @@
     <p class="subtitle">یک نگاه سریع به تفاوت‌ها</p>
   </section>
 
-  <!-- 33 -->
   <section class="slide">
     <h2>مقایسه‌ی <span class="js">جاوا اسکریپت</span> و <span class="java">جاوا</span></h2>
     <div class="divider"></div>
@@ -1505,7 +1258,6 @@
     </div>
   </section>
 
-  <!-- 34 -->
   <section class="slide">
     <h2>جایگاه در <span class="both">دنیای واقعی</span></h2>
     <div class="divider"></div>
@@ -1537,7 +1289,6 @@
     </div>
   </section>
 
-  <!-- 35 -->
   <section class="slide">
     <h2>نتیجه‌گیری <span class="both">🎯</span></h2>
     <div class="divider"></div>
@@ -1566,7 +1317,6 @@
     </div>
   </section>
 
-  <!-- 36 -->
   <section class="slide section-slide">
     <div class="sec-icon">🙏</div>
     <h2 class="both">با تشکر از توجه شما</h2>
@@ -1589,40 +1339,10 @@
   </button>
 </div>
 
-<div class="hint">
-  <kbd>Space</kbd> یا <kbd>↑</kbd> <kbd>↓</kbd> برای ناوبری
-</div>
-
 <script>
 (function() {
   'use strict';
 
-  // ===== ذرات =====
-  const particleContainer = document.getElementById('particles');
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  const particleCount = isMobile ? 14 : 35;
-  const colors = [
-    { c: '#5b8dff', g: 'rgba(91,141,255,0.9)' },
-    { c: '#a78bfa', g: 'rgba(167,139,250,0.9)' },
-    { c: '#22d3ee', g: 'rgba(34,211,238,0.9)' },
-    { c: '#fbbf24', g: 'rgba(251,191,36,0.9)' }
-  ];
-  for (let i = 0; i < particleCount; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = (1 + Math.random() * 3) * (isMobile ? 0.8 : 1);
-    const col = colors[Math.floor(Math.random() * colors.length)];
-    p.style.left = Math.random() * 100 + '%';
-    p.style.width = p.style.height = size + 'px';
-    p.style.background = col.c;
-    p.style.boxShadow = '0 0 ' + (6 + Math.random() * 10) + 'px ' + col.g;
-    p.style.animationDuration = (8 + Math.random() * 12) + 's';
-    p.style.animationDelay = (-Math.random() * 18) + 's';
-    p.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
-    particleContainer.appendChild(p);
-  }
-
-  // ===== Navigation =====
   const slides = Array.from(document.querySelectorAll('.slide'));
   const total = slides.length;
   const progressBar = document.getElementById('progressBar');
@@ -1649,24 +1369,20 @@
     const outgoing = slides[current];
     const incoming = slides[index];
 
-    slides.forEach(s => {
-      s.classList.remove('active', 'enter-from-bottom', 'enter-from-top', 'exit-to-top', 'exit-to-bottom');
-    });
+    // اسلاید فعلی: کلاس خروج
+    outgoing.classList.remove('active');
+    outgoing.classList.add(direction === 'forward' ? 'exit-up' : 'exit-down');
 
-    outgoing.classList.add('active');
-    outgoing.classList.add(direction === 'forward' ? 'exit-to-top' : 'exit-to-bottom');
-
+    // اسلاید جدید: کلاس فعال
     current = index;
     incoming.classList.add('active');
-    incoming.classList.add(direction === 'forward' ? 'enter-from-bottom' : 'enter-from-top');
     incoming.scrollTop = 0;
 
-    setTimeout(() => {
-      outgoing.classList.remove('active', 'exit-to-top', 'exit-to-bottom');
-      incoming.classList.remove('enter-from-bottom', 'enter-from-top');
-      incoming.classList.add('active');
+    // پاکسازی بعد از انیمیشن
+    setTimeout(function() {
+      outgoing.classList.remove('exit-up', 'exit-down');
       isTransitioning = false;
-    }, 800);
+    }, 450);
 
     updateUI();
   }
@@ -1674,7 +1390,7 @@
   function next() { goTo(current + 1, 'forward'); }
   function prev() { goTo(current - 1, 'backward'); }
 
-  // ===== دکمه‌ها — با pointerdown هم کار می‌کنه =====
+  // دکمه‌ها
   prevBtn.addEventListener('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -1686,68 +1402,57 @@
     next();
   });
 
-  // ===== Keyboard =====
+  // کیبورد
   document.addEventListener('keydown', function(e) {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
-    switch (e.key) {
-      case ' ':
-      case 'Spacebar':
-      case 'ArrowDown':
-        e.preventDefault();
-        next();
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        prev();
-        break;
-      case 'Home':
-        e.preventDefault();
-        goTo(0, 'backward');
-        break;
-      case 'End':
-        e.preventDefault();
-        goTo(total - 1, 'forward');
-        break;
-      case 'f':
-      case 'F':
-        toggleFullscreen();
-        break;
+    if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      next();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      prev();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0, 'backward');
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(total - 1, 'forward');
+    } else if (e.key === 'f' || e.key === 'F') {
+      toggleFullscreen();
     }
   });
 
-  // ===== Tap zones =====
+  // Tap zones
   document.getElementById('tapPrev').addEventListener('click', prev);
   document.getElementById('tapNext').addEventListener('click', next);
 
-  // ===== Touch swipe =====
-  let tStartX = 0, tStartY = 0, tStartTime = 0;
+  // سوایپ لمسی
+  let tStartY = 0, tStartTime = 0;
   deck.addEventListener('touchstart', function(e) {
-    tStartX = e.changedTouches[0].screenX;
     tStartY = e.changedTouches[0].screenY;
     tStartTime = Date.now();
   }, { passive: true });
 
   deck.addEventListener('touchend', function(e) {
-    const dx = e.changedTouches[0].screenX - tStartX;
     const dy = e.changedTouches[0].screenY - tStartY;
     const dt = Date.now() - tStartTime;
     const threshold = dt < 300 ? 30 : 60;
-    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > threshold * 1.2) {
+    if (Math.abs(dy) > threshold) {
       if (dy > 0) prev(); else next();
     }
   }, { passive: true });
 
-  // ===== Wheel =====
+  // چرخ ماوس
   let wheelLock = false;
   deck.addEventListener('wheel', function(e) {
     if (wheelLock) return;
     if (Math.abs(e.deltaY) < 30) return;
     wheelLock = true;
     if (e.deltaY > 0) next(); else prev();
-    setTimeout(function() { wheelLock = false; }, 900);
+    setTimeout(function() { wheelLock = false; }, 700);
   }, { passive: true });
 
-  // ===== Fullscreen =====
+  // تمام صفحه
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       const el = document.documentElement;
@@ -1762,11 +1467,6 @@
   fsBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     toggleFullscreen();
-  });
-
-  document.addEventListener('contextmenu', function(e) {
-    if (e.target.closest('.code-block, input, textarea')) return;
-    e.preventDefault();
   });
 
   updateUI();
